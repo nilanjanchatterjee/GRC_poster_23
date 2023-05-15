@@ -1,0 +1,158 @@
+---
+title: >
+  Evaluating individual variability in species‐habitat relationships using an integrated step-selection analysis
+author:
+  - name: Nilanjan Chatterjee
+    affiliation: 1
+    extra:
+      - "nchatter@umn.edu"
+      - "&commat;footloose_nil"
+  - name: David Wolfson
+    affiliation: 1
+  - name: Nathan Bacheler
+    affiliation: 2, 3
+  - name: Kyle Shertzer
+    affiliation: 2 
+  - name: Dennis Kim 
+    affiliation: 1
+  - name: Juliana Gomez
+    affiliation: 1
+  - name: Smith Freeman
+    affiliation: 1
+  - name: John Fieberg
+    affiliation: 1
+affiliation:
+  - Department of Fisheries, Wildlife, and Conservation Biology, University of Minnesota, MN 55108, USA.
+  - Southeast Fisheries Science Center, National Marine Fisheries Service, Beaufort, NC 28516, USA.
+  - Department of Applied Ecology, Center for Marine Sciences and Technology, North Carolina State University, Morehead City, NC 28557, USA
+  
+date: "`r Sys.Date()`"
+output:
+  betterposter::poster_better:
+    # Optional styling arguments
+    hero_background: "#287282"
+    accent_color: "#444444"
+    hero_color: "#FFFFFF"
+    logo: "https://upload.wikimedia.org/wikipedia/commons/6/6a/University_of_Minnesota_Logo.svg"     #logo: "https://upload.wikimedia.org/wikipedia/commons/7/79/NOAA_logo.svg"
+    # See betterposter::qrcode_options() for help
+    qrcode:
+      text: "https://github.com/nilanjanchatterjee/GRC_poster_23/blob/main/Nilanjan_GRC_Poster.pdf"
+      size: "350"
+    mathjax: false
+    # Generic rmarkdown arguments
+    highlight: tango
+    self_contained: true
+bibliography: Snpr_references.bib
+---
+
+```{css echo=FALSE}
+/* Adjust space at top of #hero (center panel) */
+#hero {
+  padding-top: 20%;
+  font-size: 42px;
+}
+#hero h1{
+  font-size: 3em;
+}
+#left-bar {
+background-position: bottom right;
+}
+#title-container {
+   font-size: 1.5em;
+}
+body {
+grid-template-columns: 1.5fr 2.5fr 1.5fr;
+}
+```
+
+
+<div id="hero">
+<!--
+  Center Column of Poster
+
+  * The main text goes in <h1> (single #) header.
+  * You can add additional text if desired.
+-->
+
+# **Individual variability** is fundamental to understanding species-habitat relationships. We demonstrate methods for estimating **individual-specific movement parameters**, including situations where step-lengths and turn angles depend on **continuous** or **categorical** habitat variables.
+   
+*We provide worked-out examples, code templates, and functions for quantifying variability in movement and habitat-selection parameters when implementing Integrated Step-Selection Analysis with random effects.*
+
+
+</div>
+
+
+
+<div id="left-bar">
+<!-- Text in the left bar, title and authors added automatically -->
+
+## Background
+
+Integrated step-selection analyses (ISSAs) [@avgar2016integrated; @fieberg2021guide] are frequently used to study animal movement and habitat selection. Methods for incorporating random effects in ISSAs have been developed, making it possible to quantify variability among animals in their space-use patterns. Although it is possible to model variability in both habitat selection and movement parameters [@muff2020accounting], applications to date have focused on the former despite the widely acknowledged and important role that movement plays in determining ecological processes from the individual to ecosystem level. One potential explanation for this omission is the absence of readily available software for estimating movement parameters in ISSAs with random effects. We demonstrate methods for estimating individual-specific movement parameters, including situations where step-lengths and turn angles depend on continuous or categorical habitat variables.
+
+
+## Methods
+
+1. Fit ISSA model using a dataset collected using acoustic telemtery of Red-snapper
+
+\begin{equation}
+u(s, t+ \Delta t)|u(s',t), \psi = \frac{w(x(s,t+\Delta t); \beta)\phi(s,s', x(s',  t);\gamma)}{\int_{\tilde{s}\in\ G} w(x(\tilde{s}, t+\Delta t); \beta)\phi(\tilde{s}, s', x(s', t);\gamma)d\tilde{s}},
+(\#eq:ssa)
+\end{equation}
+
+2. Movement-free selection kernel, ($w(.)$), was modeled as a log-linear function of reef class and distance-to-edge measured at the end of the movement step.
+
+3. We fit two different habitat-dependent movement kernels,
+ - Model 1: step-lengths and turn angles ~ reef class the fish was located in at the start of the movement step
+ - Model 2: step-lengths and turn angles ~ distance between the fish and the nearest reef edge at the start of the movement step
+
+4. We assumed distributions for the movement parameters
+    - Step-length ~ Gamma
+    - Turn-angle ~ von-Mises
+    
+  
+## Results
+
+The number of relocations (range 265-52,189) as well as the number of tracking days (range 3-223) were substantially different across individuals (n=35). Coefficients from the integrated step-selection models were used to understand how individuals move through different types of habitat using the selection-free movement kernels.There was substantial variability in the estimated individual-specific habitat selection parameters, with both positive and negative coefficients for each explanatory variable (Figure \@ref(fig:coefplot)). We plotted the step-length and turn-angle distribution for all the individuals (blue) and a "typical individual", i.e., one with all random effects equal to 0 (Figure \@ref(fig:slmulticomp), Figure \@ref(fig:tamulticomp)). Snappers move shorter distances, on average, when in high-relief habitat and close to reef edges. Also, their movements were least directed (with more dispersed turn angles) when they were in sand or low-relief habitats or away from the reef edges .
+
+The typical individual strongly selects for high-relief hardbottom habitat relative to sandy habitat and for areas close to the edge of sand/low-relief and medium/high-relief hardbottom classes (Figure \@ref(fig:coefplot)). Individuals also prefer areas close to the reef.
+
+
+![](https://upload.wikimedia.org/wikipedia/commons/e/e5/NASA_logo.svg){width=35%}
+![](https://upload.wikimedia.org/wikipedia/commons/7/79/NOAA_logo.svg){width=25%}
+
+
+</div>
+
+
+
+<div id="right-bar">
+<!-- Right bar -->
+
+# Figures
+
+## Comparison of step-length distribution between individuals
+
+```{r slmulticomp, dpi=300, out.width="1000px", echo=FALSE, fig.cap= "Estimated step-length distributions for different individuals and for a typical individual in different habitats (A-D). Blue lines show the step-length distribution for individual fish and red line shows the distribution for a typical indiviudal (i.e., an individual with all random effects set to 0).", fig.align="center"}
+knitr::include_graphics("./Habitat_model_sl_comprsn_1005.jpg")
+```
+
+## Comparison of turn-angle distribution between individuals
+
+```{r tamulticomp, dpi=300, out.width="1000px", echo=FALSE, fig.cap= "Estimated turn-angle distributions for different individuals and for a typical individual in different habitats (A-D). Blue lines show the step-length distribution for individual fish and red line shows the distribution for a typical indiviudal (i.e., an individual with all random effects set to 0).", fig.align="center"}
+knitr::include_graphics("./Habitat_model_ta_comprsn_0105.jpeg")
+```
+
+## Coefficient estimates from the models
+
+```{r coefplot,dpi=300, out.width="1000px", echo=FALSE, fig.cap= "Boxplot summarizing the individual habitat-selection coefficients (black dots) associated with reef class indicator variables and the distance-to-edge covariate for Model 1 (A) and Model 2 (B). Boxes bound the 25th and 75th percentiles, solid line within the box indicates the median, and the whiskers extend to 1.5 times the interquartile range of the observations. The mean coefficient, along with a 95% confidence interval for the mean, is depicted in brown.", fig.align='center'}
+
+knitr::include_graphics("./Coefficient_estimate_plot_combined.jpeg")
+```
+
+</div>
+
+# References {-}
+
+::: {#refs}
+:::
